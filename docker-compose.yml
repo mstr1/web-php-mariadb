@@ -6,26 +6,26 @@ services:
       ports:
           - "8080:80"
       volumes:
-          - ./app:/var/app
+          - ${APP_PATH}:/var/app
   fpm:
       build:
           context: ./fpm
       volumes:
-          - ./app:/var/app
+          - ${APP_PATH}:/var/app
       expose:
           - "9000"
       environment:
-          - DB_HOST=db
-          - DB_USERNAME=root
-          - DB_PASSWORD=root
-          - DB_DATABASE=laravel
+          - DB_HOST=${MYSQL_HOST}
+          - DB_USERNAME=${MYSQL_USER}
+          - DB_PASSWORD=${MYSQL_PW}
+          - DB_DATABASE=${MYSQL_DB}
   db:
       image: mariadb
       environment:
-          - MYSQL_ROOT_PASSWORD=root
-          - MYSQL_DATABASE=laravel
+          - MYSQL_ROOT_PASSWORD=${MYSQL_PW}
+          - MYSQL_DATABASE=${MYSQL_DB}
       volumes:
-          - ./database:/var/lib/mysql
+          - ${DB_PATH}:/var/lib/mysql
   phpmyadmin:
       image: phpmyadmin/phpmyadmin
       container_name: phpmyadmin
